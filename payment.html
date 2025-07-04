@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 5rem auto;
+            background-color: white;
+            padding: 2rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 1rem;
+        }
+        input, select, button {
+            padding: 0.7rem;
+            margin: 1rem 0;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Payment Details</h2>
+        <p id="guideName"></p>
+        <p id="tourPrice"></p>
+
+        <h3>Select Payment Method</h3>
+        <select id="paymentMethod" onchange="showPaymentFields()">
+            <option value="">--Select Payment Method--</option>
+            <option value="card">Credit/Debit Card</option>
+            <option value="upi">UPI</option>
+            <option value="bank">Bank Transfer</option>
+        </select>
+
+        <div id="paymentFields"></div>
+
+        <button onclick="confirmPayment()">Confirm Payment</button>
+    </div>
+
+    <script>
+        document.getElementById("guideName").textContent = "You are booking: " + sessionStorage.getItem("selectedGuide");
+        const randomPrice = (Math.floor(Math.random() * 5000) + 1000).toFixed(2);
+        document.getElementById("tourPrice").textContent = "Tour Price: ₹" + randomPrice;
+
+        function showPaymentFields() {
+            const paymentMethod = document.getElementById("paymentMethod").value;
+            const paymentFields = document.getElementById("paymentFields");
+            paymentFields.innerHTML = "";
+
+            if (paymentMethod === "card") {
+                paymentFields.innerHTML = `
+                    <input type="text" placeholder="Card Number" required>
+                    <input type="text" placeholder="Cardholder Name" required>
+                    <input type="text" placeholder="Expiry Date (MM/YY)" required>
+                    <input type="text" placeholder="CVV" required>
+                `;
+            } else if (paymentMethod === "upi") {
+                paymentFields.innerHTML = `
+                    <input type="text" placeholder="UPI ID" required>
+                `;
+            } else if (paymentMethod === "bank") {
+                paymentFields.innerHTML = `
+                    <input type="text" placeholder="Account Number" required>
+                    <input type="text" placeholder="Bank Name" required>
+                    <input type="text" placeholder="IFSC Code" required>
+                `;
+            }
+        }
+
+        function confirmPayment() {
+            if (document.getElementById("paymentMethod").value === "") {
+                alert("Please select a payment method and fill in the required details.");
+                return;
+            }
+            window.location.href = "confirmation.html";
+        }
+    </script>
+</body>
+</html>

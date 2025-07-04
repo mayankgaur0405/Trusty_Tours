@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tourist Guide Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #007BFF;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            background-color: white;
+            padding: 2rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        select, button {
+            padding: 0.5rem;
+            margin: 1rem 0;
+            width: 100%;
+        }
+        .guide {
+            border: 1px solid #ddd;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .guide button {
+            background-color: #28a745;
+            color: white;
+            padding: 0.5rem;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Tourist Guide Booking</h1>
+    </header>
+    <div class="container">
+        <h2>Select a State</h2>
+        <select id="stateSelect" onchange="showGuides()">
+            <option value="">--Select a State--</option>
+            <option value="Andhra Pradesh">Andhra Pradesh</option>
+            <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+            <option value="Assam">Assam</option>
+            <option value="Bihar">Bihar</option>
+            <option value="Chhattisgarh">Chhattisgarh</option>
+            <option value="Goa">Goa</option>
+            <option value="Gujarat">Gujarat</option>
+            <option value="Haryana">Haryana</option>
+            <option value="Himachal Pradesh">Himachal Pradesh</option>
+            <option value="Jharkhand">Jharkhand</option>
+            <option value="Karnataka">Karnataka</option>
+            <option value="Kerala">Kerala</option>
+            <option value="Madhya Pradesh">Madhya Pradesh</option>
+            <option value="Maharashtra">Maharashtra</option>
+            <option value="Manipur">Manipur</option>
+            <option value="Meghalaya">Meghalaya</option>
+            <option value="Mizoram">Mizoram</option>
+            <option value="Nagaland">Nagaland</option>
+            <option value="Odisha">Odisha</option>
+            <option value="Punjab">Punjab</option>
+            <option value="Rajasthan">Rajasthan</option>
+            <option value="Sikkim">Sikkim</option>
+            <option value="Tamil Nadu">Tamil Nadu</option>
+            <option value="Telangana">Telangana</option>
+            <option value="Tripura">Tripura</option>
+            <option value="Uttar Pradesh">Uttar Pradesh</option>
+            <option value="Uttarakhand">Uttarakhand</option>
+            <option value="West Bengal">West Bengal</option>
+        </select>
+        <div id="guidesList"></div>
+    </div>
+
+    <script>
+        const guidesData = {
+            "Andhra Pradesh": [
+                { name: "Rajesh Kumar", language: "Telugu, English", rating: 4.5 },
+                { name: "Sita Reddy", language: "Telugu, Hindi", rating: 4.7 },
+                { name: "Venkat Rao", language: "Telugu, Tamil", rating: 4.2 },
+                { name: "Anil Patil", language: "English, Hindi", rating: 4.8 },
+                { name: "Pooja Gupta", language: "Telugu, Kannada", rating: 4.6 },
+                { name: "Vivek Sharma", language: "English, Hindi", rating: 4.3 },
+                { name: "Manoj Nair", language: "Malayalam, Telugu", rating: 4.4 },
+                { name: "Anita Mehta", language: "Telugu, English", rating: 4.9 },
+                { name: "Krishna Rao", language: "Tamil, Hindi", rating: 4.1 },
+                { name: "Priya Das", language: "English, Bengali", rating: 4.6 }
+            ],
+            "Arunachal Pradesh": [
+        { name: "Tashi Dorjee", language: "Hindi, English", rating: 4.5, certification: "Certified Guide AR01" },
+        { name: "Sonam Tsering", language: "Hindi, Tibetan", rating: 4.6, certification: "Certified Guide AR02" },
+        { name: "Lobsang Phuntsok", language: "English, Tibetan", rating: 4.7, certification: "Certified Guide AR03" },
+        { name: "Karma Bhutia", language: "Hindi, English", rating: 4.4, certification: "Certified Guide AR04" },
+        { name: "Pema Choden", language: "Hindi, Tibetan", rating: 4.8, certification: "Certified Guide AR05" },
+        { name: "Dorjee Wangmo", language: "English, Hindi", rating: 4.3, certification: "Certified Guide AR06" },
+        { name: "Namgyal Lhamo", language: "Hindi, Tibetan", rating: 4.5, certification: "Certified Guide AR07" },
+        { name: "Dawa Tashi", language: "English, Hindi", rating: 4.6, certification: "Certified Guide AR08" },
+        { name: "Kunzang Choden", language: "Hindi, Tibetan", rating: 4.7, certification: "Certified Guide AR09" },
+        { name: "Jampa Wangdi", language: "Hindi, English", rating: 4.5, certification: "Certified Guide AR10" },
+    ],
+    "Assam": [
+        { name: "Rajiv Das", language: "Assamese, Hindi, English", rating: 4.6, certification: "Certified Guide AS01" },
+        { name: "Mitali Barman", language: "Assamese, English", rating: 4.8, certification: "Certified Guide AS02" },
+        { name: "Gautam Bora", language: "Hindi, Assamese", rating: 4.5, certification: "Certified Guide AS03" },
+        { name: "Ananya Dutta", language: "Assamese, Bengali, English", rating: 4.7, certification: "Certified Guide AS04" },
+        { name: "Pranab Kalita", language: "Assamese, Hindi", rating: 4.4, certification: "Certified Guide AS05" },
+        { name: "Rituparna Nath", language: "Hindi, English", rating: 4.6, certification: "Certified Guide AS06" },
+        { name: "Chinmoy Hazarika", language: "Assamese, Hindi", rating: 4.7, certification: "Certified Guide AS07" },
+        { name: "Nayanjyoti Phukan", language: "English, Assamese", rating: 4.8, certification: "Certified Guide AS08" },
+        { name: "Pallabi Baruah", language: "Hindi, Assamese", rating: 4.5, certification: "Certified Guide AS09" },
+        { name: "Rakesh Mahanta", language: "Assamese, Hindi, English", rating: 4.9, certification: "Certified Guide AS10" },
+    ],
+    "Bihar": [
+        { name: "Amit Kumar", language: "Hindi, English", rating: 4.7, certification: "Certified Guide BR01" },
+        { name: "Priya Singh", language: "Hindi, English", rating: 4.6, certification: "Certified Guide BR02" },
+        { name: "Rahul Sinha", language: "Hindi, Bhojpuri", rating: 4.5, certification: "Certified Guide BR03" },
+        { name: "Sakshi Jha", language: "Hindi, Maithili", rating: 4.8, certification: "Certified Guide BR04" },
+        { name: "Arun Yadav", language: "Hindi, English", rating: 4.4, certification: "Certified Guide BR05" },
+        { name: "Vivek Pandey", language: "Hindi, Bhojpuri", rating: 4.7, certification: "Certified Guide BR06" },
+        { name: "Anjali Verma", language: "Hindi, English", rating: 4.6, certification: "Certified Guide BR07" },
+        { name: "Rohit Mishra", language: "Hindi, Maithili", rating: 4.5, certification: "Certified Guide BR08" },
+        { name: "Sunita Devi", language: "Hindi, Bhojpuri", rating: 4.9, certification: "Certified Guide BR09" },
+        { name: "Manish Raj", language: "Hindi, English", rating: 4.8, certification: "Certified Guide BR10" },
+    ],
+    "Chhattisgarh": [
+    { name: "Ravi Verma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG01" },
+    { name: "Neelam Sahu", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG02" },
+    { name: "Prakash Yadav", language: "Hindi, Chhattisgarhi, English", rating: 4.8, certification: "Certified Guide CG03" },
+    { name: "Anita Tiwari", language: "Hindi, English", rating: 4.5, certification: "Certified Guide CG04" },
+    { name: "Suraj Patel", language: "Hindi, Chhattisgarhi", rating: 4.9, certification: "Certified Guide CG05" },
+    { name: "Kiran Rathore", language: "Hindi, English", rating: 4.4, certification: "Certified Guide CG06" },
+    { name: "Mahesh Sharma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG07" },
+    { name: "Rekha Dubey", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG08" },
+    { name: "Ajay Sen", language: "Hindi, Chhattisgarhi, English", rating: 4.5, certification: "Certified Guide CG09" },
+    { name: "Nisha Gupta", language: "Hindi, English", rating: 4.8, certification: "Certified Guide CG10" },
+],
+
+"Goa": [
+    { name: "Ravi Verma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG01" },
+    { name: "Neelam Sahu", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG02" },
+    { name: "Prakash Yadav", language: "Hindi, Chhattisgarhi, English", rating: 4.8, certification: "Certified Guide CG03" },
+    { name: "Anita Tiwari", language: "Hindi, English", rating: 4.5, certification: "Certified Guide CG04" },
+    { name: "Suraj Patel", language: "Hindi, Chhattisgarhi", rating: 4.9, certification: "Certified Guide CG05" },
+    { name: "Kiran Rathore", language: "Hindi, English", rating: 4.4, certification: "Certified Guide CG06" },
+    { name: "Mahesh Sharma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG07" },
+    { name: "Rekha Dubey", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG08" },
+    { name: "Ajay Sen", language: "Hindi, Chhattisgarhi, English", rating: 4.5, certification: "Certified Guide CG09" },
+    { name: "Nisha Gupta", language: "Hindi, English", rating: 4.8, certification: "Certified Guide CG10" },
+],
+
+"Gujarat": [
+    { name: "Ravi Verma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG01" },
+    { name: "Neelam Sahu", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG02" },
+    { name: "Prakash Yadav", language: "Hindi, Chhattisgarhi, English", rating: 4.8, certification: "Certified Guide CG03" },
+    { name: "Anita Tiwari", language: "Hindi, English", rating: 4.5, certification: "Certified Guide CG04" },
+    { name: "Suraj Patel", language: "Hindi, Chhattisgarhi", rating: 4.9, certification: "Certified Guide CG05" },
+    { name: "Kiran Rathore", language: "Hindi, English", rating: 4.4, certification: "Certified Guide CG06" },
+    { name: "Mahesh Sharma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG07" },
+    { name: "Rekha Dubey", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG08" },
+    { name: "Ajay Sen", language: "Hindi, Chhattisgarhi, English", rating: 4.5, certification: "Certified Guide CG09" },
+    { name: "Nisha Gupta", language: "Hindi, English", rating: 4.8, certification: "Certified Guide CG10" },
+],
+
+"Haryana": [
+    { name: "Ravi Verma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG01" },
+    { name: "Neelam Sahu", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG02" },
+    { name: "Prakash Yadav", language: "Hindi, Chhattisgarhi, English", rating: 4.8, certification: "Certified Guide CG03" },
+    { name: "Anita Tiwari", language: "Hindi, English", rating: 4.5, certification: "Certified Guide CG04" },
+    { name: "Suraj Patel", language: "Hindi, Chhattisgarhi", rating: 4.9, certification: "Certified Guide CG05" },
+    { name: "Kiran Rathore", language: "Hindi, English", rating: 4.4, certification: "Certified Guide CG06" },
+    { name: "Mahesh Sharma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG07" },
+    { name: "Rekha Dubey", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG08" },
+    { name: "Ajay Sen", language: "Hindi, Chhattisgarhi, English", rating: 4.5, certification: "Certified Guide CG09" },
+    { name: "Nisha Gupta", language: "Hindi, English", rating: 4.8, certification: "Certified Guide CG10" },
+],
+
+"Himachal Pradesh": [
+    { name: "Ravi Verma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG01" },
+    { name: "Neelam Sahu", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG02" },
+    { name: "Prakash Yadav", language: "Hindi, Chhattisgarhi, English", rating: 4.8, certification: "Certified Guide CG03" },
+    { name: "Anita Tiwari", language: "Hindi, English", rating: 4.5, certification: "Certified Guide CG04" },
+    { name: "Suraj Patel", language: "Hindi, Chhattisgarhi", rating: 4.9, certification: "Certified Guide CG05" },
+    { name: "Kiran Rathore", language: "Hindi, English", rating: 4.4, certification: "Certified Guide CG06" },
+    { name: "Mahesh Sharma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG07" },
+    { name: "Rekha Dubey", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG08" },
+    { name: "Ajay Sen", language: "Hindi, Chhattisgarhi, English", rating: 4.5, certification: "Certified Guide CG09" },
+    { name: "Nisha Gupta", language: "Hindi, English", rating: 4.8, certification: "Certified Guide CG10" },
+],
+
+"West Bengal": [
+    { name: "Ravi Verma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG01" },
+    { name: "Neelam Sahu", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG02" },
+    { name: "Prakash Yadav", language: "Hindi, Chhattisgarhi, English", rating: 4.8, certification: "Certified Guide CG03" },
+    { name: "Anita Tiwari", language: "Hindi, English", rating: 4.5, certification: "Certified Guide CG04" },
+    { name: "Suraj Patel", language: "Hindi, Chhattisgarhi", rating: 4.9, certification: "Certified Guide CG05" },
+    { name: "Kiran Rathore", language: "Hindi, English", rating: 4.4, certification: "Certified Guide CG06" },
+    { name: "Mahesh Sharma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG07" },
+    { name: "Rekha Dubey", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG08" },
+    { name: "Ajay Sen", language: "Hindi, Chhattisgarhi, English", rating: 4.5, certification: "Certified Guide CG09" },
+    { name: "Nisha Gupta", language: "Hindi, English", rating: 4.8, certification: "Certified Guide CG10" },
+],
+
+
+"Jammu and Kashmir": [
+    { name: "Ravi Verma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG01" },
+    { name: "Neelam Sahu", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG02" },
+    { name: "Prakash Yadav", language: "Hindi, Chhattisgarhi, English", rating: 4.8, certification: "Certified Guide CG03" },
+    { name: "Anita Tiwari", language: "Hindi, English", rating: 4.5, certification: "Certified Guide CG04" },
+    { name: "Suraj Patel", language: "Hindi, Chhattisgarhi", rating: 4.9, certification: "Certified Guide CG05" },
+    { name: "Kiran Rathore", language: "Hindi, English", rating: 4.4, certification: "Certified Guide CG06" },
+    { name: "Mahesh Sharma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG07" },
+    { name: "Rekha Dubey", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG08" },
+    { name: "Ajay Sen", language: "Hindi, Chhattisgarhi, English", rating: 4.5, certification: "Certified Guide CG09" },
+    { name: "Nisha Gupta", language: "Hindi, English", rating: 4.8, certification: "Certified Guide CG10" },
+],
+
+"Jharkhand": [
+    { name: "Ravi Verma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG01" },
+    { name: "Neelam Sahu", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG02" },
+    { name: "Prakash Yadav", language: "Hindi, Chhattisgarhi, English", rating: 4.8, certification: "Certified Guide CG03" },
+    { name: "Anita Tiwari", language: "Hindi, English", rating: 4.5, certification: "Certified Guide CG04" },
+    { name: "Suraj Patel", language: "Hindi, Chhattisgarhi", rating: 4.9, certification: "Certified Guide CG05" },
+    { name: "Kiran Rathore", language: "Hindi, English", rating: 4.4, certification: "Certified Guide CG06" },
+    { name: "Mahesh Sharma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG07" },
+    { name: "Rekha Dubey", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG08" },
+    { name: "Ajay Sen", language: "Hindi, Chhattisgarhi, English", rating: 4.5, certification: "Certified Guide CG09" },
+    { name: "Nisha Gupta", language: "Hindi, English", rating: 4.8, certification: "Certified Guide CG10" },
+],
+
+"Karnataka": [
+    { name: "Ravi Verma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG01" },
+    { name: "Neelam Sahu", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG02" },
+    { name: "Prakash Yadav", language: "Hindi, Chhattisgarhi, English", rating: 4.8, certification: "Certified Guide CG03" },
+    { name: "Anita Tiwari", language: "Hindi, English", rating: 4.5, certification: "Certified Guide CG04" },
+    { name: "Suraj Patel", language: "Hindi, Chhattisgarhi", rating: 4.9, certification: "Certified Guide CG05" },
+    { name: "Kiran Rathore", language: "Hindi, English", rating: 4.4, certification: "Certified Guide CG06" },
+    { name: "Mahesh Sharma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG07" },
+    { name: "Rekha Dubey", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG08" },
+    { name: "Ajay Sen", language: "Hindi, Chhattisgarhi, English", rating: 4.5, certification: "Certified Guide CG09" },
+    { name: "Nisha Gupta", language: "Hindi, English", rating: 4.8, certification: "Certified Guide CG10" },
+],
+
+"Kerala": [
+    { name: "Ravi Verma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG01" },
+    { name: "Neelam Sahu", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG02" },
+    { name: "Prakash Yadav", language: "Hindi, Chhattisgarhi, English", rating: 4.8, certification: "Certified Guide CG03" },
+    { name: "Anita Tiwari", language: "Hindi, English", rating: 4.5, certification: "Certified Guide CG04" },
+    { name: "Suraj Patel", language: "Hindi, Chhattisgarhi", rating: 4.9, certification: "Certified Guide CG05" },
+    { name: "Kiran Rathore", language: "Hindi, English", rating: 4.4, certification: "Certified Guide CG06" },
+    { name: "Mahesh Sharma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG07" },
+    { name: "Rekha Dubey", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG08" },
+    { name: "Ajay Sen", language: "Hindi, Chhattisgarhi, English", rating: 4.5, certification: "Certified Guide CG09" },
+    { name: "Nisha Gupta", language: "Hindi, English", rating: 4.8, certification: "Certified Guide CG10" },
+],
+
+"Madhya Pradesh": [
+    { name: "Ravi Verma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG01" },
+    { name: "Neelam Sahu", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG02" },
+    { name: "Prakash Yadav", language: "Hindi, Chhattisgarhi, English", rating: 4.8, certification: "Certified Guide CG03" },
+    { name: "Anita Tiwari", language: "Hindi, English", rating: 4.5, certification: "Certified Guide CG04" },
+    { name: "Suraj Patel", language: "Hindi, Chhattisgarhi", rating: 4.9, certification: "Certified Guide CG05" },
+    { name: "Kiran Rathore", language: "Hindi, English", rating: 4.4, certification: "Certified Guide CG06" },
+    { name: "Mahesh Sharma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG07" },
+    { name: "Rekha Dubey", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG08" },
+    { name: "Ajay Sen", language: "Hindi, Chhattisgarhi, English", rating: 4.5, certification: "Certified Guide CG09" },
+    { name: "Nisha Gupta", language: "Hindi, English", rating: 4.8, certification: "Certified Guide CG10" },
+],
+
+"Maharashtra": [
+    { name: "Ravi Verma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG01" },
+    { name: "Neelam Sahu", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG02" },
+    { name: "Prakash Yadav", language: "Hindi, Chhattisgarhi, English", rating: 4.8, certification: "Certified Guide CG03" },
+    { name: "Anita Tiwari", language: "Hindi, English", rating: 4.5, certification: "Certified Guide CG04" },
+    { name: "Suraj Patel", language: "Hindi, Chhattisgarhi", rating: 4.9, certification: "Certified Guide CG05" },
+    { name: "Kiran Rathore", language: "Hindi, English", rating: 4.4, certification: "Certified Guide CG06" },
+    { name: "Mahesh Sharma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG07" },
+    { name: "Rekha Dubey", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG08" },
+    { name: "Ajay Sen", language: "Hindi, Chhattisgarhi, English", rating: 4.5, certification: "Certified Guide CG09" },
+    { name: "Nisha Gupta", language: "Hindi, English", rating: 4.8, certification: "Certified Guide CG10" },
+],
+
+"Manipur": [
+    { name: "Ravi Verma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG01" },
+    { name: "Neelam Sahu", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG02" },
+    { name: "Prakash Yadav", language: "Hindi, Chhattisgarhi, English", rating: 4.8, certification: "Certified Guide CG03" },
+    { name: "Anita Tiwari", language: "Hindi, English", rating: 4.5, certification: "Certified Guide CG04" },
+    { name: "Suraj Patel", language: "Hindi, Chhattisgarhi", rating: 4.9, certification: "Certified Guide CG05" },
+    { name: "Kiran Rathore", language: "Hindi, English", rating: 4.4, certification: "Certified Guide CG06" },
+    { name: "Mahesh Sharma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG07" },
+    { name: "Rekha Dubey", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG08" },
+    { name: "Ajay Sen", language: "Hindi, Chhattisgarhi, English", rating: 4.5, certification: "Certified Guide CG09" },
+    { name: "Nisha Gupta", language: "Hindi, English", rating: 4.8, certification: "Certified Guide CG10" },
+],
+
+"Meghalaya": [
+    { name: "Ravi Verma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG01" },
+    { name: "Neelam Sahu", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG02" },
+    { name: "Prakash Yadav", language: "Hindi, Chhattisgarhi, English", rating: 4.8, certification: "Certified Guide CG03" },
+    { name: "Anita Tiwari", language: "Hindi, English", rating: 4.5, certification: "Certified Guide CG04" },
+    { name: "Suraj Patel", language: "Hindi, Chhattisgarhi", rating: 4.9, certification: "Certified Guide CG05" },
+    { name: "Kiran Rathore", language: "Hindi, English", rating: 4.4, certification: "Certified Guide CG06" },
+    { name: "Mahesh Sharma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG07" },
+    { name: "Rekha Dubey", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG08" },
+    { name: "Ajay Sen", language: "Hindi, Chhattisgarhi, English", rating: 4.5, certification: "Certified Guide CG09" },
+    { name: "Nisha Gupta", language: "Hindi, English", rating: 4.8, certification: "Certified Guide CG10" },
+],
+
+"Mizoram": [
+    { name: "Ravi Verma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG01" },
+    { name: "Neelam Sahu", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG02" },
+    { name: "Prakash Yadav", language: "Hindi, Chhattisgarhi, English", rating: 4.8, certification: "Certified Guide CG03" },
+    { name: "Anita Tiwari", language: "Hindi, English", rating: 4.5, certification: "Certified Guide CG04" },
+    { name: "Suraj Patel", language: "Hindi, Chhattisgarhi", rating: 4.9, certification: "Certified Guide CG05" },
+    { name: "Kiran Rathore", language: "Hindi, English", rating: 4.4, certification: "Certified Guide CG06" },
+    { name: "Mahesh Sharma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG07" },
+    { name: "Rekha Dubey", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG08" },
+    { name: "Ajay Sen", language: "Hindi, Chhattisgarhi, English", rating: 4.5, certification: "Certified Guide CG09" },
+    { name: "Nisha Gupta", language: "Hindi, English", rating: 4.8, certification: "Certified Guide CG10" },
+],
+
+"Nagaland": [
+    { name: "Ravi Verma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG01" },
+    { name: "Neelam Sahu", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG02" },
+    { name: "Prakash Yadav", language: "Hindi, Chhattisgarhi, English", rating: 4.8, certification: "Certified Guide CG03" },
+    { name: "Anita Tiwari", language: "Hindi, English", rating: 4.5, certification: "Certified Guide CG04" },
+    { name: "Suraj Patel", language: "Hindi, Chhattisgarhi", rating: 4.9, certification: "Certified Guide CG05" },
+    { name: "Kiran Rathore", language: "Hindi, English", rating: 4.4, certification: "Certified Guide CG06" },
+    { name: "Mahesh Sharma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG07" },
+    { name: "Rekha Dubey", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG08" },
+    { name: "Ajay Sen", language: "Hindi, Chhattisgarhi, English", rating: 4.5, certification: "Certified Guide CG09" },
+    { name: "Nisha Gupta", language: "Hindi, English", rating: 4.8, certification: "Certified Guide CG10" },
+],
+
+"Orissa": [
+    { name: "Ravi Verma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG01" },
+    { name: "Neelam Sahu", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG02" },
+    { name: "Prakash Yadav", language: "Hindi, Chhattisgarhi, English", rating: 4.8, certification: "Certified Guide CG03" },
+    { name: "Anita Tiwari", language: "Hindi, English", rating: 4.5, certification: "Certified Guide CG04" },
+    { name: "Suraj Patel", language: "Hindi, Chhattisgarhi", rating: 4.9, certification: "Certified Guide CG05" },
+    { name: "Kiran Rathore", language: "Hindi, English", rating: 4.4, certification: "Certified Guide CG06" },
+    { name: "Mahesh Sharma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG07" },
+    { name: "Rekha Dubey", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG08" },
+    { name: "Ajay Sen", language: "Hindi, Chhattisgarhi, English", rating: 4.5, certification: "Certified Guide CG09" },
+    { name: "Nisha Gupta", language: "Hindi, English", rating: 4.8, certification: "Certified Guide CG10" },
+],
+
+"Punjab": [
+    { name: "Ravi Verma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG01" },
+    { name: "Neelam Sahu", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG02" },
+    { name: "Prakash Yadav", language: "Hindi, Chhattisgarhi, English", rating: 4.8, certification: "Certified Guide CG03" },
+    { name: "Anita Tiwari", language: "Hindi, English", rating: 4.5, certification: "Certified Guide CG04" },
+    { name: "Suraj Patel", language: "Hindi, Chhattisgarhi", rating: 4.9, certification: "Certified Guide CG05" },
+    { name: "Kiran Rathore", language: "Hindi, English", rating: 4.4, certification: "Certified Guide CG06" },
+    { name: "Mahesh Sharma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG07" },
+    { name: "Rekha Dubey", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG08" },
+    { name: "Ajay Sen", language: "Hindi, Chhattisgarhi, English", rating: 4.5, certification: "Certified Guide CG09" },
+    { name: "Nisha Gupta", language: "Hindi, English", rating: 4.8, certification: "Certified Guide CG10" },
+],
+
+"Rajasthan": [
+    { name: "Ravi Verma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG01" },
+    { name: "Neelam Sahu", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG02" },
+    { name: "Prakash Yadav", language: "Hindi, Chhattisgarhi, English", rating: 4.8, certification: "Certified Guide CG03" },
+    { name: "Anita Tiwari", language: "Hindi, English", rating: 4.5, certification: "Certified Guide CG04" },
+    { name: "Suraj Patel", language: "Hindi, Chhattisgarhi", rating: 4.9, certification: "Certified Guide CG05" },
+    { name: "Kiran Rathore", language: "Hindi, English", rating: 4.4, certification: "Certified Guide CG06" },
+    { name: "Mahesh Sharma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG07" },
+    { name: "Rekha Dubey", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG08" },
+    { name: "Ajay Sen", language: "Hindi, Chhattisgarhi, English", rating: 4.5, certification: "Certified Guide CG09" },
+    { name: "Nisha Gupta", language: "Hindi, English", rating: 4.8, certification: "Certified Guide CG10" },
+],
+
+"Sikkim": [
+    { name: "Ravi Verma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG01" },
+    { name: "Neelam Sahu", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG02" },
+    { name: "Prakash Yadav", language: "Hindi, Chhattisgarhi, English", rating: 4.8, certification: "Certified Guide CG03" },
+    { name: "Anita Tiwari", language: "Hindi, English", rating: 4.5, certification: "Certified Guide CG04" },
+    { name: "Suraj Patel", language: "Hindi, Chhattisgarhi", rating: 4.9, certification: "Certified Guide CG05" },
+    { name: "Kiran Rathore", language: "Hindi, English", rating: 4.4, certification: "Certified Guide CG06" },
+    { name: "Mahesh Sharma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG07" },
+    { name: "Rekha Dubey", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG08" },
+    { name: "Ajay Sen", language: "Hindi, Chhattisgarhi, English", rating: 4.5, certification: "Certified Guide CG09" },
+    { name: "Nisha Gupta", language: "Hindi, English", rating: 4.8, certification: "Certified Guide CG10" },
+],
+
+"Tamil Nadu": [
+    { name: "Ravi Verma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG01" },
+    { name: "Neelam Sahu", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG02" },
+    { name: "Prakash Yadav", language: "Hindi, Chhattisgarhi, English", rating: 4.8, certification: "Certified Guide CG03" },
+    { name: "Anita Tiwari", language: "Hindi, English", rating: 4.5, certification: "Certified Guide CG04" },
+    { name: "Suraj Patel", language: "Hindi, Chhattisgarhi", rating: 4.9, certification: "Certified Guide CG05" },
+    { name: "Kiran Rathore", language: "Hindi, English", rating: 4.4, certification: "Certified Guide CG06" },
+    { name: "Mahesh Sharma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG07" },
+    { name: "Rekha Dubey", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG08" },
+    { name: "Ajay Sen", language: "Hindi, Chhattisgarhi, English", rating: 4.5, certification: "Certified Guide CG09" },
+    { name: "Nisha Gupta", language: "Hindi, English", rating: 4.8, certification: "Certified Guide CG10" },
+],
+
+"Telangana": [
+    { name: "Ravi Verma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG01" },
+    { name: "Neelam Sahu", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG02" },
+    { name: "Prakash Yadav", language: "Hindi, Chhattisgarhi, English", rating: 4.8, certification: "Certified Guide CG03" },
+    { name: "Anita Tiwari", language: "Hindi, English", rating: 4.5, certification: "Certified Guide CG04" },
+    { name: "Suraj Patel", language: "Hindi, Chhattisgarhi", rating: 4.9, certification: "Certified Guide CG05" },
+    { name: "Kiran Rathore", language: "Hindi, English", rating: 4.4, certification: "Certified Guide CG06" },
+    { name: "Mahesh Sharma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG07" },
+    { name: "Rekha Dubey", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG08" },
+    { name: "Ajay Sen", language: "Hindi, Chhattisgarhi, English", rating: 4.5, certification: "Certified Guide CG09" },
+    { name: "Nisha Gupta", language: "Hindi, English", rating: 4.8, certification: "Certified Guide CG10" },
+],
+
+"Tripura": [
+    { name: "Ravi Verma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG01" },
+    { name: "Neelam Sahu", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG02" },
+    { name: "Prakash Yadav", language: "Hindi, Chhattisgarhi, English", rating: 4.8, certification: "Certified Guide CG03" },
+    { name: "Anita Tiwari", language: "Hindi, English", rating: 4.5, certification: "Certified Guide CG04" },
+    { name: "Suraj Patel", language: "Hindi, Chhattisgarhi", rating: 4.9, certification: "Certified Guide CG05" },
+    { name: "Kiran Rathore", language: "Hindi, English", rating: 4.4, certification: "Certified Guide CG06" },
+    { name: "Mahesh Sharma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG07" },
+    { name: "Rekha Dubey", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG08" },
+    { name: "Ajay Sen", language: "Hindi, Chhattisgarhi, English", rating: 4.5, certification: "Certified Guide CG09" },
+    { name: "Nisha Gupta", language: "Hindi, English", rating: 4.8, certification: "Certified Guide CG10" },
+],
+
+"Uttar Pradesh": [
+    { name: "Ravi Verma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG01" },
+    { name: "Neelam Sahu", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG02" },
+    { name: "Prakash Yadav", language: "Hindi, Chhattisgarhi, English", rating: 4.8, certification: "Certified Guide CG03" },
+    { name: "Anita Tiwari", language: "Hindi, English", rating: 4.5, certification: "Certified Guide CG04" },
+    { name: "Suraj Patel", language: "Hindi, Chhattisgarhi", rating: 4.9, certification: "Certified Guide CG05" },
+    { name: "Kiran Rathore", language: "Hindi, English", rating: 4.4, certification: "Certified Guide CG06" },
+    { name: "Mahesh Sharma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG07" },
+    { name: "Rekha Dubey", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG08" },
+    { name: "Ajay Sen", language: "Hindi, Chhattisgarhi, English", rating: 4.5, certification: "Certified Guide CG09" },
+    { name: "Nisha Gupta", language: "Hindi, English", rating: 4.8, certification: "Certified Guide CG10" },
+],
+
+"Uttarakhand": [
+    { name: "Ravi Verma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG01" },
+    { name: "Neelam Sahu", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG02" },
+    { name: "Prakash Yadav", language: "Hindi, Chhattisgarhi, English", rating: 4.8, certification: "Certified Guide CG03" },
+    { name: "Anita Tiwari", language: "Hindi, English", rating: 4.5, certification: "Certified Guide CG04" },
+    { name: "Suraj Patel", language: "Hindi, Chhattisgarhi", rating: 4.9, certification: "Certified Guide CG05" },
+    { name: "Kiran Rathore", language: "Hindi, English", rating: 4.4, certification: "Certified Guide CG06" },
+    { name: "Mahesh Sharma", language: "Hindi, Chhattisgarhi", rating: 4.7, certification: "Certified Guide CG07" },
+    { name: "Rekha Dubey", language: "Hindi, English", rating: 4.6, certification: "Certified Guide CG08" },
+    { name: "Ajay Sen", language: "Hindi, Chhattisgarhi, English", rating: 4.5, certification: "Certified Guide CG09" },
+    { name: "Nisha Gupta", language: "Hindi, English", rating: 4.8, certification: "Certified Guide CG10" },
+],
+
+
+            // Add similar data for the other 27 states...
+        };
+
+        function showGuides() {
+            const state = document.getElementById("stateSelect").value;
+            const guidesList = document.getElementById("guidesList");
+            guidesList.innerHTML = "";
+
+            if (state && guidesData[state]) {
+                guidesData[state].forEach((guide) => {
+                    guidesList.innerHTML += `
+                        <div class="guide">
+                            <h3>${guide.name}</h3>
+                            <p><strong>Languages:</strong> ${guide.language}</p>
+                            <p><strong>Rating:</strong> ${guide.rating} &#9733;</p>
+                            <button onclick="redirectToPayment('${guide.name}')">Book Now</button>
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        function redirectToPayment(guideName) {
+            sessionStorage.setItem("selectedGuide", guideName);
+            window.location.href = "payment.html";
+        }
+    </script>
+   
+
+</body>
+</html>
